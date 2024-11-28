@@ -14,4 +14,14 @@ This is a simple web app that allows users to test their reaction time. The app 
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/your-username/reaction-time-app.git
+   git clone https://github.com/isaroperius/reaction-time-app.git
+
+2. Navigate to the Project Directory: Change to the directory where the app has been cloned:
+    ```bash
+    cd reaction-time-app
+
+3. Run the setup.bat file to automatically create a virtual environment, install dependencies, and start the app for windows while setup.sh for linux/macOS
+
+4. Access the app on http://127.0.0.1:5000
+
+
