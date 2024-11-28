@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reaction Time Test</title>
+</head>
+<body style="text-align:center;">
+    <h1>Reaction Time Test</h1>
+    <div id="color-box" style="width:300px;height:300px;background-color:red;margin:auto;"></div>
+    <button id="start-button" onclick="startTest()">Start</button>
+    <p id="reaction-result"></p>
+
+    <script>
+        let startTime;
+        
+        function startTest() {
+            document.getElementById('reaction-result').innerText = '';
+            fetch('/start', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'green') {
+                        document.getElementById('color-box').style.backgroundColor = 'green';
+                        startTime = new Date().getTime();
+                    }
+                });
+        }
+
+        document.getElementById('color-box').addEventListener('click', () => {
+            if (startTime) {
+                const clickTime = new Date().getTime();
+                fetch('/reaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_time: startTime / 1000 })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('reaction-result').innerText = `Reaction Time: ${data.reaction_time.toFixed(3)} seconds`;
+                    document.getElementById('color-box').style.backgroundColor = 'red';
+                    startTime = null;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
