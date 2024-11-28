@@ -3,12 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Reaction Time Test</title>
+    <style>
+        /* General body settings */
+        body {
+            background-color: black;
+            color: white;  /* Ensure text is visible on black background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Make the body fill the entire viewport */
+            flex-direction: row; /* Align content horizontally */
+        }
+
+        /* Container for left side (instructions) */
+        #instructions {
+            width: 40%;
+            padding: 10px;
+            font-size: 14px;
+            text-align: left;
+            margin-right: 20px;
+            overflow-y: auto;
+        }
+
+        #instructions h3 {
+            font-size: 18px;
+        }
+
+        /* Main content container for the reaction test */
+        .container {
+            width: 60%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Color box styles */
+        #color-box {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            margin: 20px;
+            border-radius: 10px;
+        }
+
+        /* Start button styling */
+        #start-button {
+            margin-bottom: 10px;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        /* Result styling */
+        #reaction-result {
+            color: white;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
-<body style="text-align:center;">
-    <h1>Reaction Time Test</h1>
-    <div id="color-box" style="width:300px;height:300px;background-color:red;margin:auto;"></div>
-    <button id="start-button" onclick="startTest()">Start</button>
-    <p id="reaction-result"></p>
+<body>
+    <!-- Left side instructions -->
+    <div id="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click on 'Start'.</li>
+            <li>Click the window as soon as it turns green.</li>
+        </ol>
+    </div>
+    
+    <!-- Right side reaction test -->
+    <div class="container">
+        <h1>Reaction Time Test</h1>
+        <div id="color-box"></div>
+        <button id="start-button" onclick="startTest()">Start</button>
+        <p id="reaction-result"></p>
+    </div>
 
     <script>
         let startTime;
