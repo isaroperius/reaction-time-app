@@ -1,0 +1,43 @@
+trigger:
+- main  # Trigger pipeline on changes to the main branch
+
+pool:
+  name: 'Default'
+  demands:
+    - agent.name -equals selfHostedAgent
+
+variables:
+  PythonPath: '/usr/bin/python3.13'  # Path to Python 3.13 on the agent
+
+steps:
+# Step 1: Install dependencies
+- script: |
+    echo "Using Python from: $(PythonPath)"
+    $(PythonPath) -m pip install --upgrade pip
+    $(PythonPath) -m pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+# Step 2: Add a delay before packaging and then package the application using zip
+- script: |
+    echo "Waiting for a few seconds before creating the package to avoid file changes"
+    sleep 5  # Wait for 5 seconds to avoid file changes during archiving
+    echo "Listing contents of the working directory:"
+    ls -al $(System.DefaultWorkingDirectory)  # Helps to verify where the files are located
+    # Create the zip package
+    zip -r $(System.DefaultWorkingDirectory)/app.zip . -x "*.git/*" "*.log"  # Exclude .git and .log files
+  displayName: 'Package application with zip'
+
+# Step 3: Deploy to Azure App Service
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'my-conn'  # Replace with your Azure subscription service connection
+    appName: 'reactionapp'  # Replace with your Azure App Service name
+    package: '$(System.DefaultWorkingDirectory)/app.zip'  # Corrected path to the packaged app
+  displayName: 'Deploy to Azure App Service'
+
+# Step 4: Notify completion (Optional - add a step to notify or trigger further actions)
+- script: |
+    echo "Deployment completed successfully!"
+  displayName: 'Notify Completion'
+
+
